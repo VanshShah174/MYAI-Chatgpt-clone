@@ -7,6 +7,10 @@ import ChatPage from "./routes/chatPage/chatPage.jsx";
 import RootLayout from "./layouts/rootLayout/rootLayout.jsx";
 import DashboardLayout from "./layouts/dashboardLayout/DashboardLayout.jsx";
 import DashboardPage from "./routes/dashboardPage/dashboardPage.jsx";
+import SignInPage from "./routes/signInPage/signInPage.jsx";
+import SignUpPage from "./routes/signUpPage/signUpPage.jsx";
+
+
 const router = createBrowserRouter([
  {
   element:<RootLayout />,
@@ -14,6 +18,14 @@ const router = createBrowserRouter([
     {
       path: "/",
       element: <Hompage />,
+    },
+    {
+      path: "/sign-in/*",
+      element: <SignInPage />,
+    },
+    {
+      path: "/sign-up/*",
+      element: <SignUpPage />,
     },
     {
       element:<DashboardLayout />,
