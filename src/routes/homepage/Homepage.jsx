@@ -62,6 +62,8 @@ const Homepage = () => {
           <Link to="/">Terms of Service</Link>
           <span>|</span>
           <Link to="/">Privacy Policy</Link>
+          <span>|</span>
+          <Link to="/">Made with 💗 by Vansh Shah</Link>
         </div>
       </div>
     </div>
