@@ -65,7 +65,9 @@ const NewPrompt = () => {
     e.preventDefault()
 
     const text = e.target.text.value;
+    if(!text) return;
     add(text)
+  
   }
 
   return (
