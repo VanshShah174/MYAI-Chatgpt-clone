@@ -97,6 +97,22 @@ app.post("/api/chats", ClerkExpressRequireAuth(),async (req, res) => {
         }
       });
       
+     
+      app.get("api/userChats",ClerkExpressRequireAuth(), async (req,res)=>{
+        const userId = req.user.id;
+
+        try {
+          const userChats = UserChats.find({userId})
+
+          res.status(200).send(userChats[0].chats);
+        }catch(err){
+          console.log(err);
+          res.status(500).send("Error fetching userchats!");
+
+        }
+
+
+      })
 
       app.use((err, req, res, next) => {
         console.error(err.stack)
