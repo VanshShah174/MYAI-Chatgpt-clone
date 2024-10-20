@@ -90,8 +90,3 @@ JWT_SECRET=<your-jwt-secret>
 
 ### Client
 The \`.env\` file in the \`client/\` directory might require additional variables, depending on external services like API keys.
-
-EOL
-
-# Notify user that the README.md file has been created
-echo "README.md file has been created successfully."
