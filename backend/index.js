@@ -5,7 +5,12 @@ import mongoose from "mongoose";
 import UserChats from "./models/userChats.js";
 import Chat from "./models/chat.js";
 import { ClerkExpressRequireAuth} from '@clerk/clerk-sdk-node'
+import dotenv from 'dotenv';
+dotenv.config();
 
+
+
+// const ImageKit = require('imagekit');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -17,13 +22,21 @@ app.use(cors({
 
 
 const connect = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO)
-        console.log("Connected to Mongodb")
-    } catch (err) {
-        console.log(err);
-    }
-}
+  try {
+      await mongoose.connect(process.env.MONGO, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          serverSelectionTimeoutMS: 30000,  // 30-second timeout for initial server selection
+          socketTimeoutMS: 45000,  // 45-second socket timeout
+      });
+      console.log("Connected to MongoDB");
+  } catch (err) {
+      console.log("Error connecting to MongoDB:", err.message);
+  }
+};
+
+connect();
+
 
 const imageKit = new ImageKit({
     urlEndpoint: process.env.IMAGE_KIT_ENDPOINT,
@@ -31,11 +44,22 @@ const imageKit = new ImageKit({
     privateKey: process.env.IMAGE_KIT_PRIVATE_KEY,
 })
 
+console.log('Public Key:', process.env.IMAGE_KIT_PUBLIC_KEY);
+console.log('Private Key:', process.env.IMAGE_KIT_PRIVATE_KEY);
+console.log('URL Endpoint:', process.env.IMAGE_KIT_ENDPOINT);
+
+
 
 app.get("/api/upload", (req, res) => {
-    const result = imageKit.getAuthenticationParameters();
-    res.send(result);
-})
+  try {
+      const result = imageKit.getAuthenticationParameters();
+      res.send(result);
+  } catch (error) {
+      console.error("Error with ImageKit: ", error);
+      res.status(500).send("Error with ImageKit!");
+  }
+});
+
 
 app.use(express.json())
 
@@ -99,17 +123,25 @@ app.post("/api/chats", ClerkExpressRequireAuth(),async (req, res) => {
       
      
       app.get("/api/userchats", ClerkExpressRequireAuth(), async (req, res) => {
-        const userId = req.auth.userId;
-      
+        const userId = req.auth.userId;  // Assuming this gets the user ID from Clerk authentication
+        
         try {
-          const userChats = await UserChats.find({ userId });
-      
-          res.status(200).send(userChats[0].chats);
+            console.log(`Fetching user chats for userId: ${userId}`);
+            const userChats = await UserChats.find({ userId });
+    
+            if (!userChats || userChats.length === 0) {
+                console.log(`No chats found for userId: ${userId}`);
+                return res.status(404).send("No chats found.");
+            }
+    
+            console.log(`Fetched user chats: ${JSON.stringify(userChats)}`);
+            res.status(200).send(userChats[0].chats);
         } catch (err) {
-          console.log(err);
-          res.status(500).send("Error fetching userchats!");
+            console.error("Error fetching user chats:", err);
+            res.status(500).send("Internal Server Error");
         }
-      }); 
+    });
+    
 
 
       app.get("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
@@ -159,6 +191,6 @@ app.post("/api/chats", ClerkExpressRequireAuth(),async (req, res) => {
       })
 
 app.listen(port, () => {
-    connect()
-    console.log("Server is running on port number 3000")
+    connect();
+    console.log("Server is running on port number 3000");
 })

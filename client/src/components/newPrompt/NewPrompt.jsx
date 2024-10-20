@@ -27,6 +27,9 @@ const NewPrompt = ({data}) => {
         parts: [{ text: "Great to meet you. What would you like to know?" }],
       },
     ],
+    generationConfig : {
+      
+    }
   });
 
 
