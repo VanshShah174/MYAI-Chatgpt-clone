@@ -1,7 +1,3 @@
-#!/bin/bash
-
-# Create the README.md file
-cat <<EOL > README.md
 # ChatGPT Clone Project
 
 This repository contains the code for a ChatGPT clone with both backend and client components. The project is structured into two parts: the backend server and the frontend client. This document will guide you through setting up and running both components.
