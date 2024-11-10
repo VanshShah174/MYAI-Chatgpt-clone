@@ -44,9 +44,9 @@ const imageKit = new ImageKit({
     privateKey: process.env.IMAGE_KIT_PRIVATE_KEY,
 })
 
-console.log('Public Key:', process.env.IMAGE_KIT_PUBLIC_KEY);
-console.log('Private Key:', process.env.IMAGE_KIT_PRIVATE_KEY);
-console.log('URL Endpoint:', process.env.IMAGE_KIT_ENDPOINT);
+// console.log('Public Key:', process.env.IMAGE_KIT_PUBLIC_KEY);
+// console.log('Private Key:', process.env.IMAGE_KIT_PRIVATE_KEY);
+// console.log('URL Endpoint:', process.env.IMAGE_KIT_ENDPOINT);
 
 
 
